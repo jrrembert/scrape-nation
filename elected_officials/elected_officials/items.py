@@ -4,11 +4,16 @@
 #
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 
 
 class ElectedOfficialsItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field(serializer=str)
+    state = scrapy.Field(serializer=str)
+    state_abbreviation = scrapy.Field(serializer=str)
+    party = scrapy.Field(serializer=str)
+
+
+class GovernorItem(ElectedOfficialsItem):
+    took_office = scrapy.Field(serializer=str)
+    term_end = scrapy.Field(serializer=str)

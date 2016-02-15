@@ -1,10 +1,15 @@
 import scrapy
 
+from elected_officials.items import GovernorItem
+
 
 class GovernorSpider(scrapy.Spider):
-    name = "Governor Spider"
+    name = "governor_spider"
     allowed_domains = ['en.wikipedia.org']
     start_urls = ['https://en.wikipedia.org/wiki/List_of_current_United_States_governors']
+
+    def __init__(self, *args, **kwargs):
+        super(GovernorSpider, self).__init__(*args, **kwargs)
 
     def parse(self, response):
         governor_table = response.xpath('//*[@id="mw-content-text"]/table[2]')
@@ -17,13 +22,19 @@ class GovernorSpider(scrapy.Spider):
         term_end = governor_table.xpath('tr/td[7]/text()').extract()
         #self.logger.info('Array lengths: {}, {}, {}, {}, {}'.format(len(state_names), len(governor_names), len(parties), len(took_office), len(term_end)))
 
+        item = GovernorItem()
+
         try:
-            for x in xrange(50):
-                print("{}: {}".format(governors_headings[0], state_names[x]))
-                print("{}: {}".format(governors_headings[2], ' '.join(reversed(governor_names[x].split(',')))))
-                print("{}: {}".format(governors_headings[3], parties[x]))
-                print("{}: {}".format(governors_headings[5], took_office[x]))
-                print("{}: {}".format(governors_headings[6], term_end[x]))
+            for i in xrange(53):
+                name = ' '.join(reversed(governor_names[i].split(',')))
+
+                item['name'] = name
+                item['state'] = state_names[i]
+                item['party'] = parties[i]
+                item['took_office'] = took_office[i]
+                item['term_end'] = term_end[i]
+
+                yield item
 
         except IndexError as error:
-            print("Error: {}".format(error.msg))
+            print("\033[91mError: {}\033[0m".format(error))
