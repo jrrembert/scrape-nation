@@ -14,6 +14,10 @@ BOT_NAME = 'elected_officials'
 SPIDER_MODULES = ['elected_officials.spiders']
 NEWSPIDER_MODULE = 'elected_officials.spiders'
 
+# DB settings
+MONGO_NAME = "elected_officials"
+MONGO_PORT = "27017"
+MONGO_URI = "localhost" + ":" + MONGO_PORT
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'elected_officials (+http://www.yourdomain.com)'
@@ -61,9 +65,9 @@ NEWSPIDER_MODULE = 'elected_officials.spiders'
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'elected_officials.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'elected_officials.pipelines.GovernorPipeline': 0
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
