@@ -1,3 +1,5 @@
+import json
+
 import scrapy
 
 from elected_officials.items import GovernorItem
@@ -20,16 +22,19 @@ class GovernorSpider(scrapy.Spider):
         parties = governor_table.xpath('tr/td[4]/a/text()').extract()
         took_office = governor_table.xpath('tr/td[6]/span[2]/text()').extract()
         term_end = governor_table.xpath('tr/td[7]/text()').extract()
-        #self.logger.info('Array lengths: {}, {}, {}, {}, {}'.format(len(state_names), len(governor_names), len(parties), len(took_office), len(term_end)))
+
+        with open('tests/fixtures/state_names_to_abbreviations.json', 'r') as f:
+            state_abbreviations = json.load(f)
 
         item = GovernorItem()
 
         try:
-            for i in xrange(53):
-                name = ' '.join(reversed(governor_names[i].split(',')))
-
+            for i in xrange(50):
+                name = ' '.join(reversed(governor_names[i].split(','))).lstrip()
+                
                 item['name'] = name
                 item['state'] = state_names[i]
+                item['state_abbreviation'] = state_abbreviations[state_names[i]]
                 item['party'] = parties[i]
                 item['took_office'] = took_office[i]
                 item['term_end'] = term_end[i]
