@@ -4,7 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import pymongo
+from pymongo import MongoClient
 
 
 class GovernorPipeline(object):
@@ -17,13 +17,14 @@ class GovernorPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_NAME')
-        )
+        return cls(mongo_uri=crawler.settings.get('MONGO_URI'),
+                   mongo_db=crawler.settings.get('MONGO_NAME'))
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(self.mongo_uri)
+        self.client = MongoClient(self.mongo_uri,
+                                  connectTimeoutMS='CONNECT_TIMEOUT' or 20000,
+                                  socketTimeoutMS='SOCKET_TIMEOUT' or None,
+                                  socketKeepAlive='SOCKET_KEEP_ALIVE' or False)
         self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):

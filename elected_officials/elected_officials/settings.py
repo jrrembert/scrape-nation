@@ -87,3 +87,11 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+try:
+    LOCAL_SETTINGS
+except NameError:
+    try:
+        from elected_officials.local_settings import *
+    except:
+        print("No local_settings.py file found - using settings from settings.py")
