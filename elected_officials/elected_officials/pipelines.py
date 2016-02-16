@@ -21,10 +21,12 @@ class GovernorPipeline(object):
                    mongo_db=crawler.settings.get('MONGO_NAME'))
 
     def open_spider(self, spider):
-        self.client = MongoClient(self.mongo_uri,
-                                  connectTimeoutMS='CONNECT_TIMEOUT' or 20000,
-                                  socketTimeoutMS='SOCKET_TIMEOUT' or None,
-                                  socketKeepAlive='SOCKET_KEEP_ALIVE' or False)
+        self.client = MongoClient(
+            self.mongo_uri,
+            connectTimeoutMS=spider.settings.get('CONNECT_TIMEOUT') or 20000,
+            socketTimeoutMS=spider.settings.get('SOCKET_TIMEOUT') or None,
+            socketKeepAlive=spider.settings.get('SOCKET_KEEP_ALIVE') or False
+        )
         self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
