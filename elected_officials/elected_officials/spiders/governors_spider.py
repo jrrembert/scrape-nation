@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import scrapy
@@ -31,13 +32,15 @@ class GovernorSpider(scrapy.Spider):
         try:
             for i in xrange(50):
                 name = ' '.join(reversed(governor_names[i].split(','))).lstrip()
-                
+
                 item['name'] = name
                 item['state'] = state_names[i]
                 item['state_abbreviation'] = state_abbreviations[state_names[i]]
                 item['party'] = parties[i]
                 item['took_office'] = took_office[i]
                 item['term_end'] = term_end[i]
+                item['last_updated'] = datetime.datetime.now()
+                item['position'] = 'governor'
 
                 yield item
 

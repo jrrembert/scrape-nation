@@ -12,6 +12,8 @@ class ElectedOfficialsItem(scrapy.Item):
     state = scrapy.Field(serializer=str)
     state_abbreviation = scrapy.Field(serializer=str)
     party = scrapy.Field(serializer=str)
+    position = scrapy.Field(serializer=str)
+    last_updated = scrapy.Field(serializer=str)
 
 
 class GovernorItem(ElectedOfficialsItem):
