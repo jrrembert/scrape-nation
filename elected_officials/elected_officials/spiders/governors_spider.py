@@ -40,7 +40,7 @@ class GovernorSpider(scrapy.Spider):
                 item['took_office'] = took_office[i]
                 item['term_end'] = term_end[i]
                 item['last_updated'] = datetime.datetime.now()
-                item['position'] = 'governor'
+                item['title'] = 'governor'
 
                 yield item
 

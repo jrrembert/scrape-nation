@@ -6,3 +6,7 @@ local_settings.py
 # Database
 
 **/mongo
+
+# Scrapy
+
+.scrapy/
